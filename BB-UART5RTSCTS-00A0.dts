@@ -1,0 +1,53 @@
+/*
+ * Copyright (C) 2013 CircuitCo
+ *
+ * Virtual cape for UART5 on connector pins P9.37 P8.38
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "ti,beaglebone", "ti,beaglebone-black";
+
+	/* identification */
+	part-number = "BB-UART5-RTSCTS";
+	version = "00A0";
+
+	/* state the resources this cape uses */
+	exclusive-use =
+		/* the pin header uses */
+		"P8.37",	/* uart5_txd */
+		"P8.38",	/* uart5_rxd */
+		"P8.31",	/* uart5_ctsn */
+		"P8.32",	/* uart5_rtsn */
+		/* the hardware ip uses */
+		"uart5";
+
+	fragment@0 {
+		target = <&am33xx_pinmux>;
+		__overlay__ {
+			bb_uart5_pins: pinmux_bb_uart5_pins {
+				pinctrl-single,pins = <
+					/* the uart pins */
+					0x0C4 0x24	/* lcd_data9.uart5_rxd | MODE4 */
+					0x0C0 0x04	/* lcd_data8.uart5_txd | MODE4 */
+					0x0D8 0x06	/* lcd_data14.uart5_cts | MODE6 */
+					0x0DC 0x06	/* lcd_data15.uart5_rts | MODE6 */
+				>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&uart6>;	/* really uart5 */
+		__overlay__ {
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&bb_uart5_pins>;
+		};
+	};
+};
