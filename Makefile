@@ -1,13 +1,13 @@
 # Makefile for Power Insight Device tree
 
-DSRCS = $(glob *.dts)
+DSRCS = $(wildcard *.dts)
 dt: $(DSRCS:.dts=.dtbo)
 
 .PHONY: clean install
 
 install: dt
-	$(CP) *.dtbo /lib/firmware
-	$(ECHO) Manually run configure_pins.sh or add to /etc/rc.local
+	cp $(DSRCS:.dts=.dtbo)/lib/firmware
+	echo Manually run configure_pins.sh or add to /etc/rc.local
 
 clean:
 	$(RM) *.dtbo
