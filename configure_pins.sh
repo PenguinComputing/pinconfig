@@ -38,6 +38,11 @@ done
 # EXP2_I2C % 9516_EN2 = P8-41 = LCD_DATA4 = GPIO2_10 = gpio74
 # EXP3_I2C % 9516_EN3 = P8-40 = LCD_DATA7 = GPIO2_13 = gpio77
 # TCC_I2C  % 9516_EN4 = P8-39 = LCD_DATA6 = GPIO2_12 = gpio76
+# In order by gpio number:
+# gpio74 -> 9516_EN2 % EXP2_I2C
+# gpio75 -> 9516_EN1 % EXP1_I2C
+# gpio76 -> 9516_EN4 % TCC_I2C
+# gpio77 -> 9516_EN3 % EXP3_I2C
 for gpio in {74..77}
    do
    echo $gpio > /sys/class/gpio/export
@@ -53,6 +58,7 @@ echo 1 > /sys/class/gpio/gpio76/value
 # And attach eeprom driver for temperature cape @ 0x50
 echo 24c256 0x50 > /sys/bus/i2c/devices/i2c-1/new_device
 
+# Configure these pins as inputs
 for gpio in 8 9 73 80 81 ; do
    echo $gpio > /sys/class/gpio/export
    while [[ ! -e /sys/class/gpio/gpio$gpio ]]; do
