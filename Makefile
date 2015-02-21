@@ -6,7 +6,7 @@ dt: $(DSRCS:.dts=.dtbo)
 .PHONY: clean install
 
 install: dt
-	cp $(DSRCS:.dts=.dtbo)/lib/firmware
+	cp $(DSRCS:.dts=.dtbo) /lib/firmware
 	echo Manually run configure_pins.sh or add to /etc/rc.local
 
 clean:
